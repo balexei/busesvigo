@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.coil.network)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material.icons.core)
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.moshi.core)
