@@ -21,7 +21,7 @@ fun NetworkBusStop.toLocal() = LocalBusStop(
     latitude = latitude,
     longitude = longitude,
     isFavourite = false,
-    alias = ""
+    alias = null
 )
 
 fun List<NetworkBusStop>.toLocal() = map(NetworkBusStop::toLocal)

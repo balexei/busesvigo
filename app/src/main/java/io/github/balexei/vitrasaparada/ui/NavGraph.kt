@@ -36,7 +36,7 @@ fun NavGraph(
         composable(
             route = Destinations.ALL
         ) { navBackStackEntry ->
-            AllRoute()
+            AllRoute(viewModel)
         }
         composable(
             route = Destinations.ABOUT

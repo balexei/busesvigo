@@ -12,5 +12,5 @@ data class LocalBusStop(
     val latitude: Double,
     val longitude: Double,
     val isFavourite: Boolean,
-    val alias: String,
+    val alias: String?,
 )

@@ -11,7 +11,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import io.github.balexei.vitrasaparada.ui.Destinations
+import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
 
 @Composable
 fun BottomNavigationBar(
@@ -50,6 +52,18 @@ fun BottomNavigationBar(
         icon = { Icon(Icons.Filled.Info, "") },
         onClick = navigateToAbout
     )
+}
 
-
+@PreviewLightDark
+@Composable
+private fun BottomNavigationBarPreview() {
+    VitrasaParadaTheme {
+        BottomNavigationBar(
+            currentRoute = "",
+            navigateToFavourites = {},
+            navigateToNearby = {},
+            navigateToAll = {},
+            navigateToAbout = {},
+        )
+    }
 }
