@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainViewModel(
     private val busStopRepository: BusStopRepository,
@@ -34,8 +35,16 @@ class MainViewModel(
     private fun checkPopulateFreshInstall() {
         viewModelScope.launch {
             if (busStopRepository.getBusStops().isEmpty()) {
+                Timber.d("No bus stops saved, initializing list of bus stops")
                 busStopRepository.initFromNetwork()
             }
+        }
+    }
+
+    fun setFavourite(id: Int, value: Boolean) {
+        viewModelScope.launch {
+            Timber.d("Setting stop id $id favourite to $value")
+            busStopRepository.setFavorite(id, value)
         }
     }
 

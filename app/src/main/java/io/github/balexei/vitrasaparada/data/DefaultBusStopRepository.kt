@@ -5,6 +5,7 @@ import io.github.balexei.vitrasaparada.data.source.local.LocalBusStop
 import io.github.balexei.vitrasaparada.data.source.network.NetworkDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 class DefaultBusStopRepository(
     private val networkDataSource: NetworkDataSource,
@@ -25,8 +26,15 @@ class DefaultBusStopRepository(
         TODO("Not yet implemented")
     }
 
-    override fun setFavorite(id: Int, favorite: Boolean) {
-        TODO("Not yet implemented")
+    override suspend fun setFavorite(id: Int, favourite: Boolean) {
+        val stop = localDataSource.getById(id)
+        if (stop != null) {
+            val updatedStop = stop.copy(isFavourite = favourite)
+            localDataSource.upsert(updatedStop)
+            Timber.d("Stop $id favourite set to $favourite")
+        } else {
+            Timber.w("Attempted to set favourite a stop that does not exist (id = $id)")
+        }
     }
 
     override suspend fun initFromNetwork() {

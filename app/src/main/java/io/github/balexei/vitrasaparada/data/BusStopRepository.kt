@@ -6,6 +6,6 @@ interface BusStopRepository {
     fun getBusStopsStream(): Flow<List<BusStop>>
     suspend fun getBusStops(forceUpdate: Boolean = false) : List<BusStop>
     fun getFavoritesStream(): Flow<List<BusStop>>
-    fun setFavorite(id: Int, favorite: Boolean)
+    suspend fun setFavorite(id: Int, favorite: Boolean)
     suspend fun initFromNetwork()
 }

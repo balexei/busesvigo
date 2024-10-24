@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +29,12 @@ import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
 
 @Composable
-fun BusStopCard(stop: BusStop, modifier: Modifier = Modifier, showSchedule: Boolean = false) {
+fun BusStopCard(
+    stop: BusStop,
+    modifier: Modifier = Modifier,
+    showSchedule: Boolean = false,
+    setFavourite: (Int, Boolean) -> Unit = { _, _ -> }
+) {
     ElevatedCard(modifier = modifier.padding(8.dp)) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -42,9 +47,9 @@ fun BusStopCard(stop: BusStop, modifier: Modifier = Modifier, showSchedule: Bool
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
                 )
-                IconButton(onClick = {}) {
+                IconButton(onClick = { setFavourite(stop.id, !stop.isFavourite) }) {
                     Icon(
-                        imageVector = if (stop.isFavourite) Icons.Filled.Star else Icons.Outlined.Star,
+                        imageVector = if (stop.isFavourite) Icons.Filled.Star else Icons.Filled.Add,
                         contentDescription = ""
                     )
                 }

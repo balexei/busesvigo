@@ -14,7 +14,7 @@ interface BusStopDao {
     suspend fun getAll(): List<LocalBusStop>
 
     @Query("SELECT * FROM STOPS WHERE id = :id")
-    suspend fun getById(id: String): LocalBusStop?
+    suspend fun getById(id: Int): LocalBusStop?
 
     @Upsert
     suspend fun upsert(task: LocalBusStop)

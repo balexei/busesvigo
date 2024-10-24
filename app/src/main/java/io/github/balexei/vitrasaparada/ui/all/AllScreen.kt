@@ -16,14 +16,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 
 @Composable
-fun AllScreen(stops: List<BusStop>, modifier: Modifier = Modifier) {
+fun AllScreen(
+    stops: List<BusStop>,
+    setFavourite: (Int, Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var selectedStop by remember { mutableStateOf<BusStop?>(null) }
 
     LazyColumn(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         items(stops) {
-            BusStopCard(it, modifier = Modifier.clickable(onClick = {
-                selectedStop = it
-            }))
+            BusStopCard(
+                stop = it,
+                setFavourite = setFavourite,
+                modifier = Modifier.clickable(onClick = {
+                    selectedStop = it
+                })
+            )
         }
     }
     selectedStop?.let {
