@@ -20,12 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
 
@@ -96,12 +94,7 @@ fun BusFavouriteStopCard(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            AsyncImage(
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.FillWidth,
-                model = "https://datos.vigo.org/vitrasa-parada/${stop.id}",
-                contentDescription = "",
-            )
+            NextBuses(modifier = Modifier.fillMaxWidth(), stopId = stop.id)
         }
     }
 }
