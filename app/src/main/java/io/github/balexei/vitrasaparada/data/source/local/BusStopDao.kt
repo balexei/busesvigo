@@ -10,6 +10,9 @@ interface BusStopDao {
     @Query("SELECT * FROM STOPS")
     fun observeAll(): Flow<List<LocalBusStop>>
 
+    @Query("SELECT * FROM STOPS WHERE isFavourite = TRUE")
+    fun observeFavourites(): Flow<List<LocalBusStop>>
+
     @Query("SELECT * FROM STOPS")
     suspend fun getAll(): List<LocalBusStop>
 

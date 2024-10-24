@@ -23,7 +23,7 @@ class DefaultBusStopRepository(
     }
 
     override fun getFavoritesStream(): Flow<List<BusStop>> {
-        TODO("Not yet implemented")
+        return localDataSource.observeFavourites().map(List<LocalBusStop>::toExternal)
     }
 
     override suspend fun setFavorite(id: Int, favourite: Boolean) {

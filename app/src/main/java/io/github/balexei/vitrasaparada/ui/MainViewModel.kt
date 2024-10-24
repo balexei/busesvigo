@@ -32,6 +32,13 @@ class MainViewModel(
             initialValue = emptyList()
         )
 
+    val favouriteStops: StateFlow<List<BusStop>> = busStopRepository.getFavoritesStream()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
     private fun checkPopulateFreshInstall() {
         viewModelScope.launch {
             if (busStopRepository.getBusStops().isEmpty()) {

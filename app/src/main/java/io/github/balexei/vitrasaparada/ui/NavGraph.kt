@@ -26,7 +26,7 @@ fun NavGraph(
         composable(
             route = Destinations.FAVOURITES
         ) { navBackStackEntry ->
-            FavouritesRoute()
+            FavouritesRoute(viewModel)
         }
         composable(
             route = Destinations.NEARBY
