@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -29,10 +30,9 @@ import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
 
 @Composable
-fun BusStopCard(
+fun BusAllStopCard(
     stop: BusStop,
     modifier: Modifier = Modifier,
-    showSchedule: Boolean = false,
     setFavourite: (Int, Boolean) -> Unit = { _, _ -> }
 ) {
     ElevatedCard(modifier = modifier.padding(8.dp)) {
@@ -66,14 +66,42 @@ fun BusStopCard(
                     SuggestionChip(label = { Text(it) }, onClick = {})
                 }
             }
-            if (showSchedule) {
-                Spacer(modifier = Modifier.height(8.dp))
-                AsyncImage(
-                    modifier = Modifier.fillMaxWidth(),
-                    model = "https://datos.vigo.org/vitrasa-parada/${stop.id}",
-                    contentDescription = "",
+        }
+    }
+}
+
+@Composable
+fun BusFavouriteStopCard(
+    stop: BusStop,
+    modifier: Modifier = Modifier,
+    setFavourite: (Int, Boolean) -> Unit = { _, _ -> }
+) {
+    ElevatedCard(modifier = modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stop.alias ?: stop.name,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
                 )
+                IconButton(onClick = { setFavourite(stop.id, !stop.isFavourite) }) {
+                    Icon(
+                        imageVector = if (stop.isFavourite) Icons.Filled.Star else Icons.Filled.Add,
+                        contentDescription = ""
+                    )
+                }
             }
+            Spacer(modifier = Modifier.height(8.dp))
+            AsyncImage(
+                modifier = Modifier.fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
+                model = "https://datos.vigo.org/vitrasa-parada/${stop.id}",
+                contentDescription = "",
+            )
         }
     }
 }
@@ -82,7 +110,7 @@ fun BusStopCard(
 @Composable
 private fun BusStopDetailedCardPreview(@PreviewParameter(BusStopPreviewParameterProvider::class) stop: BusStop) {
     VitrasaParadaTheme {
-        BusStopCard(stop, showSchedule = true)
+        BusFavouriteStopCard(stop)
     }
 }
 
@@ -90,6 +118,6 @@ private fun BusStopDetailedCardPreview(@PreviewParameter(BusStopPreviewParameter
 @Composable
 private fun BusStopSummaryCardPreview(@PreviewParameter(BusStopPreviewParameterProvider::class) stop: BusStop) {
     VitrasaParadaTheme {
-        BusStopCard(stop, showSchedule = false)
+        BusAllStopCard(stop)
     }
 }
