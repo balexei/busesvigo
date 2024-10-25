@@ -33,7 +33,7 @@ fun BusAllStopCard(
     modifier: Modifier = Modifier,
     setFavourite: (Int, Boolean) -> Unit = { _, _ -> }
 ) {
-    ElevatedCard(modifier = modifier.padding(8.dp)) {
+    ElevatedCard(modifier = modifier) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),

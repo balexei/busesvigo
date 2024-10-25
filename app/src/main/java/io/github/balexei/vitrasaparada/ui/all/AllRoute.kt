@@ -8,6 +8,13 @@ import io.github.balexei.vitrasaparada.ui.MainViewModel
 
 @Composable
 fun AllRoute(viewModel: MainViewModel) {
-    val busStops by viewModel.busStops.collectAsState()
-    AllScreen(modifier = Modifier, stops = busStops, setFavourite = viewModel::setFavourite)
+    val busStops by viewModel.filteredStops.collectAsState()
+    val query by viewModel.searchQuery.collectAsState()
+    AllScreen(
+        modifier = Modifier,
+        displayedStops = busStops,
+        setFavourite = viewModel::setFavourite,
+        updateQuery = viewModel::updateSearchQuery,
+        query = query
+    )
 }

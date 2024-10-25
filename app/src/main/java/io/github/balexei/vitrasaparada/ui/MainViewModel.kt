@@ -11,8 +11,10 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import io.github.balexei.vitrasaparada.VitrasaParada
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.data.BusStopRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -25,7 +27,19 @@ class MainViewModel(
         checkPopulateFreshInstall()
     }
 
-    val busStops: StateFlow<List<BusStop>> = busStopRepository.getBusStopsStream()
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery
+
+    val filteredStops: StateFlow<List<BusStop>> = _searchQuery
+        .combine(busStopRepository.getBusStopsStream()) { query, busStops ->
+            if (query.isBlank()) {
+                busStops
+            } else {
+                busStops.filter { busStop ->
+                    busStop.name.contains(query, ignoreCase = true)
+                }
+            }
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
@@ -39,19 +53,24 @@ class MainViewModel(
             initialValue = emptyList()
         )
 
+
+    fun setFavourite(id: Int, value: Boolean) {
+        viewModelScope.launch {
+            Timber.d("Setting stop id $id favourite to $value")
+            busStopRepository.setFavorite(id, value)
+        }
+    }
+
+    fun updateSearchQuery(query: String) {
+        _searchQuery.value = query
+    }
+
     private fun checkPopulateFreshInstall() {
         viewModelScope.launch {
             if (busStopRepository.getBusStops().isEmpty()) {
                 Timber.d("No bus stops saved, initializing list of bus stops")
                 busStopRepository.initFromNetwork()
             }
-        }
-    }
-
-    fun setFavourite(id: Int, value: Boolean) {
-        viewModelScope.launch {
-            Timber.d("Setting stop id $id favourite to $value")
-            busStopRepository.setFavorite(id, value)
         }
     }
 
