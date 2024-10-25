@@ -11,10 +11,14 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import io.github.balexei.vitrasaparada.VitrasaParada
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.data.BusStopRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -28,9 +32,11 @@ class MainViewModel(
     }
 
     private val _searchQuery = MutableStateFlow("")
+    @OptIn(FlowPreview::class)
+    private val debouncedQuery = _searchQuery.debounce(250)
     val searchQuery: StateFlow<String> = _searchQuery
 
-    val filteredStops: StateFlow<List<BusStop>> = _searchQuery
+    val filteredStops: StateFlow<List<BusStop>> = debouncedQuery
         .combine(busStopRepository.getBusStopsStream()) { query, busStops ->
             if (query.isBlank()) {
                 busStops
@@ -40,6 +46,7 @@ class MainViewModel(
                 }
             }
         }
+        .flowOn(Dispatchers.Default)
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000),
