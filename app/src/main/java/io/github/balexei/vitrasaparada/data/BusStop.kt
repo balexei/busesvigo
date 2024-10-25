@@ -4,9 +4,9 @@ data class BusStop(
     val id: Int,
     val name: String,
     val routes: List<String>,
-    val stopLocation: BusStopLocation,
+    val stopLocation: Position,
     val isFavourite: Boolean,
     val alias: String?
 )
 
-data class BusStopLocation(val latitude: Double, val longitude: Double)
+data class Position(val latitude: Double, val longitude: Double)

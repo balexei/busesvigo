@@ -7,7 +7,7 @@ fun LocalBusStop.toExternal() = BusStop(
     id = id,
     name = stopName,
     routes = routes.split(","),
-    stopLocation = BusStopLocation(latitude = latitude, longitude = longitude),
+    stopLocation = Position(latitude = latitude, longitude = longitude),
     alias = alias,
     isFavourite = isFavourite
 )
