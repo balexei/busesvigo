@@ -16,6 +16,7 @@ okhttp = "4.12.0"
 navigation = "2.8.3"
 materialIcons = "1.7.4"
 timber = "5.0.1"
+location = "21.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,7 +43,8 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 moshi-core = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-timber = { group = "com.jakewharton.timber", name = "timber", version.ref ="timber"}
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "location" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
