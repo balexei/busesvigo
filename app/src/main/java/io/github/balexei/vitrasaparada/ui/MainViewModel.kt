@@ -1,5 +1,6 @@
 package io.github.balexei.vitrasaparada.ui
 
+import android.app.Application
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -8,28 +9,45 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 import io.github.balexei.vitrasaparada.VitrasaParada
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.data.BusStopRepository
+import io.github.balexei.vitrasaparada.data.Position
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MainViewModel(
+    private val application: Application,
     private val busStopRepository: BusStopRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     init {
         checkPopulateFreshInstall()
+        attachLocationListeners()
     }
+
+    private val fusedLocationClient: FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(application)
 
     private val _searchQuery = MutableStateFlow("")
     @OptIn(FlowPreview::class)
@@ -81,12 +99,60 @@ class MainViewModel(
         }
     }
 
+    private val _currentLocation = MutableStateFlow<Position?>(null)
+    val currentLocation: StateFlow<Position?> = _currentLocation
+
+    private fun attachLocationListeners() {
+        viewModelScope.launch {
+            delay(1L) // FIXME: _currentLocation null unless I add this
+            _currentLocation.subscriptionCount
+                .map { count -> count > 0 }
+                .distinctUntilChanged()
+                .onEach { isActive ->
+                    if (isActive) startLocationUpdates() else stopLocationUpdates()
+                }.launchIn(viewModelScope)
+        }
+    }
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(location: LocationResult) {
+            location.lastLocation?.let {
+                Timber.d("New location $it")
+                _currentLocation.value = Position(latitude = it.latitude, longitude = it.longitude)
+            }
+        }
+    }
+
+    private var isTrackingLocation = false
+
+    fun startLocationUpdates() {
+        Timber.d("Start location updates")
+        if (!isTrackingLocation) {
+            isTrackingLocation = true
+            val locationRequest =
+                LocationRequest.Builder(0L).setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
+                    .setIntervalMillis(10000L).build()
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
+        }
+    }
+
+    fun stopLocationUpdates() {
+        Timber.d("Stop location updates")
+        if (isTrackingLocation) {
+            isTrackingLocation = false
+            fusedLocationClient.removeLocationUpdates(locationCallback)
+        }
+    }
+
+
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val savedStateHandle = createSavedStateHandle()
-                val busStopRepository = (this[APPLICATION_KEY] as VitrasaParada).busStopRepository
+                val application = this[APPLICATION_KEY] as VitrasaParada
+                val busStopRepository = application.busStopRepository
                 MainViewModel(
+                    application = application,
                     busStopRepository = busStopRepository,
                     savedStateHandle = savedStateHandle
                 )

@@ -31,7 +31,7 @@ fun NavGraph(
         composable(
             route = Destinations.NEARBY
         ) { navBackStackEntry ->
-            NearbyRoute()
+            NearbyRoute(viewModel)
         }
         composable(
             route = Destinations.ALL
