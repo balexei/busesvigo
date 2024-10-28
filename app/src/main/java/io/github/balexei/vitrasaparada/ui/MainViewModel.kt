@@ -42,7 +42,7 @@ class MainViewModel(
                 busStops
             } else {
                 busStops.filter { busStop ->
-                    busStop.name.contains(query, ignoreCase = true)
+                    busStop.matchesSearch(query)
                 }
             }
         }

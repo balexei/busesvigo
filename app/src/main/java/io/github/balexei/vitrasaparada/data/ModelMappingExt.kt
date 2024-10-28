@@ -9,7 +9,8 @@ fun LocalBusStop.toExternal() = BusStop(
     routes = routes.split(","),
     stopLocation = BusStopLocation(latitude = latitude, longitude = longitude),
     alias = alias,
-    isFavourite = isFavourite
+    isFavourite = isFavourite,
+    searchString = buildSearchString(stopName, routes, alias),
 )
 
 fun List<LocalBusStop>.toExternal() = map(LocalBusStop::toExternal)

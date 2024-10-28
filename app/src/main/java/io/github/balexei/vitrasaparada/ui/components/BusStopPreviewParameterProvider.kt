@@ -12,7 +12,8 @@ class BusStopPreviewParameterProvider : PreviewParameterProvider<BusStop> {
             routes = listOf("A", "15C", "U1", "U2"),
             stopLocation = BusStopLocation(latitude = 42.170123888, longitude = -8.687270393),
             isFavourite = true,
-            alias = null
+            alias = null,
+            searchString = ""
         ),
         BusStop(
             id = 14264,
@@ -41,7 +42,8 @@ class BusStopPreviewParameterProvider : PreviewParameterProvider<BusStop> {
             ),
             stopLocation = BusStopLocation(latitude = 42.235873545, longitude = -8.720083317),
             isFavourite = false,
-            alias = "Farola"
+            alias = "Farola",
+            searchString = ""
         )
     )
 
