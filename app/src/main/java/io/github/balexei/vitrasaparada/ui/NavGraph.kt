@@ -43,6 +43,5 @@ fun NavGraph(
         ) { navBackStackEntry ->
             AboutRoute()
         }
-
     }
 }

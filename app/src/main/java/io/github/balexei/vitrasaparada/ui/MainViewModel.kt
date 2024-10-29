@@ -1,6 +1,7 @@
 package io.github.balexei.vitrasaparada.ui
 
 import android.app.Application
+import android.location.Location
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -101,6 +102,36 @@ class MainViewModel(
 
     private val _currentLocation = MutableStateFlow<Position?>(null)
     val currentLocation: StateFlow<Position?> = _currentLocation
+
+    val nearbyStops: StateFlow<List<BusStop>> =
+        currentLocation.combine(busStopRepository.getBusStopsStream()) { location, stops ->
+            location?.let {
+                filterNearbyStops(stops, it)
+            } ?: emptyList()
+        }
+            .flowOn(Dispatchers.Default)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
+
+    private fun filterNearbyStops(
+        stops: List<BusStop>,
+        position: Position,
+    ): List<BusStop> {
+        return stops.filter {
+            val results = FloatArray(1)
+            Location.distanceBetween(
+                position.latitude,
+                position.longitude,
+                it.stopLocation.latitude,
+                it.stopLocation.longitude,
+                results
+            )
+            results[0] < 200
+        }
+    }
 
     private fun attachLocationListeners() {
         viewModelScope.launch {
