@@ -1,7 +1,11 @@
 package io.github.balexei.vitrasaparada.ui
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.pm.PackageManager
 import android.location.Location
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,9 +27,11 @@ import io.github.balexei.vitrasaparada.data.Position
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -51,6 +57,7 @@ class MainViewModel(
         LocationServices.getFusedLocationProviderClient(application)
 
     private val _searchQuery = MutableStateFlow("")
+
     @OptIn(FlowPreview::class)
     private val debouncedQuery = _searchQuery.debounce(250)
     val searchQuery: StateFlow<String> = _searchQuery
@@ -135,12 +142,12 @@ class MainViewModel(
 
     private fun attachLocationListeners() {
         viewModelScope.launch {
-            delay(1L) // FIXME: _currentLocation null unless I add this
+            delay(1L) // FIXME ñapa
             _currentLocation.subscriptionCount
                 .map { count -> count > 0 }
                 .distinctUntilChanged()
                 .onEach { isActive ->
-                    if (isActive) startLocationUpdates() else stopLocationUpdates()
+                    if (isActive) checkPermissionAndStartLocationUpdates() else stopLocationUpdates()
                 }.launchIn(viewModelScope)
         }
     }
@@ -155,11 +162,32 @@ class MainViewModel(
     }
 
     private var isTrackingLocation = false
+    private val _requestLocationPermissionEvent = MutableSharedFlow<Unit>()
+    val requestLocationPermissionEvent = _requestLocationPermissionEvent.asSharedFlow()
 
+    suspend fun checkPermissionAndStartLocationUpdates() {
+        Timber.d("Checking permission")
+        if (ActivityCompat.checkSelfPermission(
+                application.applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                application.applicationContext,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            Timber.d("Emit ask for permission")
+            _requestLocationPermissionEvent.emit(Unit)
+        } else {
+            startLocationUpdates()
+        }
+
+    }
+
+    @SuppressLint("MissingPermission")
     fun startLocationUpdates() {
-        Timber.d("Start location updates")
         if (!isTrackingLocation) {
             isTrackingLocation = true
+            Timber.d("Start location updates")
             val locationRequest =
                 LocationRequest.Builder(0L).setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
                     .setIntervalMillis(10000L).build()
@@ -174,7 +202,6 @@ class MainViewModel(
             fusedLocationClient.removeLocationUpdates(locationCallback)
         }
     }
-
 
     companion object {
         val Factory: ViewModelProvider.Factory = viewModelFactory {
