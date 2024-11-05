@@ -37,7 +37,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        enableEdgeToEdge()
         setContent {
             VitrasaParadaTheme {
                 val navController = rememberNavController()
