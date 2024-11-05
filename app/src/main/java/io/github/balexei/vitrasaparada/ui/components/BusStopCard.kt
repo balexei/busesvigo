@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
+import io.github.balexei.vitrasaparada.ui.util.BusStopPreviewParameterProvider
 
 @Composable
 fun BusAllStopCard(

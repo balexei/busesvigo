@@ -12,9 +12,13 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.ui.components.BusAllStopCard
+import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
+import io.github.balexei.vitrasaparada.ui.util.BusStopListPreviewParameterProvider
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -46,5 +50,17 @@ fun AllScreen(
                 setFavourite = setFavourite,
             )
         }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun AllScreenPreview(@PreviewParameter(BusStopListPreviewParameterProvider::class) stops: List<BusStop>) {
+    VitrasaParadaTheme {
+        AllScreen(
+            displayedStops = stops,
+            setFavourite = { _, _ -> },
+            query = "query",
+            updateQuery = {})
     }
 }

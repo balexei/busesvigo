@@ -13,10 +13,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.data.Position
 import io.github.balexei.vitrasaparada.ui.components.BusFavouriteStopCard
+import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
+import io.github.balexei.vitrasaparada.ui.util.BusStopListPreviewParameterProvider
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -56,5 +60,17 @@ fun NearbyScreen(
                 stop = it, setFavourite = setFavourite
             )
         }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun NearbyScreenPreview(@PreviewParameter(BusStopListPreviewParameterProvider::class) stops: List<BusStop>) {
+    VitrasaParadaTheme {
+        NearbyScreen(
+            currentLocation = Position(latitude = 42.17016, longitude = -8.68835),
+            stops = stops,
+            setFavourite = { _, _ -> },
+        )
     }
 }

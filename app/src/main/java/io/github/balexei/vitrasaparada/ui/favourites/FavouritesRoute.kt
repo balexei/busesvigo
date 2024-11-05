@@ -1,5 +1,6 @@
 package io.github.balexei.vitrasaparada.ui.favourites
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -25,7 +26,12 @@ fun FavouritesRoute(viewModel: MainViewModel) {
         }
     }
 
-    FavouritesScreen(modifier = Modifier, stops = favouriteStops, setFavourite = viewModel::setFavourite, time = currentTime)
+    FavouritesScreen(
+        modifier = Modifier.fillMaxSize(),
+        stops = favouriteStops,
+        setFavourite = viewModel::setFavourite,
+        time = currentTime
+    )
 }
 
 fun getCurrentUtcTime(): String {
