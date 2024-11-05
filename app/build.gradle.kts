@@ -19,9 +19,32 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val keystoreFileProp = System.getProperty("KEYSTORE_FILE")
+                ?: project.findProperty("KEYSTORE_FILE") as String?
+            val keystorePasswordProp = System.getProperty("KEYSTORE_PASSWORD")
+                ?: project.findProperty("KEYSTORE_PASSWORD") as String?
+            val keyAliasProp = System.getProperty("RELEASE_KEY_ALIAS")
+                ?: project.findProperty("RELEASE_KEY_ALIAS") as String?
+            val keyPasswordProp = System.getProperty("RELEASE_KEY_PASSWORD")
+                ?: project.findProperty("RELEASE_KEY_PASSWORD") as String?
+
+            if (keystoreFileProp != null) {
+                storeFile = file(keystoreFileProp)
+                storePassword = keystorePasswordProp
+                keyAlias = keyAliasProp
+                keyPassword = keyPasswordProp
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+            signingConfig = signingConfigs["release"]
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,6 +64,21 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+
+    applicationVariants.all {
+        resValue("string", "applicationId", applicationId)
+        if (name == "debug") {
+            outputs.forEach { output ->
+                output as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+                output.outputFileName = "${applicationId}_${versionName}_debug.apk"
+            }
+        } else if (name == "release") {
+            outputs.forEach { output ->
+                output as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+                output.outputFileName = "${applicationId}_${versionName}.apk"
+            }
+        }
     }
 }
 
