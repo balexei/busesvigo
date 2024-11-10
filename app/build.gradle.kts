@@ -21,13 +21,13 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystoreFileProp = System.getProperty("KEYSTORE_FILE")
+            val keystoreFileProp = System.getenv("KEYSTORE_FILE")
                 ?: project.findProperty("KEYSTORE_FILE") as String?
-            val keystorePasswordProp = System.getProperty("KEYSTORE_PASSWORD")
+            val keystorePasswordProp = System.getenv("KEYSTORE_PASSWORD")
                 ?: project.findProperty("KEYSTORE_PASSWORD") as String?
-            val keyAliasProp = System.getProperty("RELEASE_KEY_ALIAS")
+            val keyAliasProp = System.getenv("RELEASE_KEY_ALIAS")
                 ?: project.findProperty("RELEASE_KEY_ALIAS") as String?
-            val keyPasswordProp = System.getProperty("RELEASE_KEY_PASSWORD")
+            val keyPasswordProp = System.getenv("RELEASE_KEY_PASSWORD")
                 ?: project.findProperty("RELEASE_KEY_PASSWORD") as String?
 
             if (keystoreFileProp != null) {
