@@ -103,7 +103,7 @@ dependencies {
     annotationProcessor(libs.androidx.room.compiler)
     ksp(libs.androidx.room.compiler)
     implementation(libs.moshi.core)
-    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
     implementation(libs.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

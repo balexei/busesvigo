@@ -1,7 +1,9 @@
 package io.github.balexei.vitrasaparada.data.source.network
 
 import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class NetworkBusStop(
     @Json(name = "id") val id: Int,
     @Json(name = "nombre") val stopName: String,
