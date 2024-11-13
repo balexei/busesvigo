@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Buses Vigo</string>
+    <string name="favourites">Favoritos</string>
+    <string name="nearby">Cerca</string>
+    <string name="all">Todas</string>
+    <string name="about">Acerca de</string>
+    <string name="routes">Líneas</string>
+    <string name="description_bus_stop_info">Información acerca de la parada</string>
+    <string name="no_favourites_hint">Las paradas mascadas como favoritas aparecerán aquí.</string>
+    <string name="showing_stops_within_radius">Mostrando paradas en un radio de %dm</string>
+    <string name="lat_lon">LAT: %2$.5f LON: %2$.5f</string>
+    <string name="data_source_city_council">Fuente de los datos: Ayuntamiento de Vigo</string>
+</resources>
