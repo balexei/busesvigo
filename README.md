@@ -3,7 +3,7 @@
 [![Release Build](https://github.com/balexei/vitrasa-parada/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/balexei/vitrasa-parada/actions/workflows/release.yml)
 
 Buses Vigo is an Android app designed for residents and frequent users of the public transport
-system in Vigo who want a quick way to check the next busses arriving at a particular bus stop.
+system in Vigo who want a quick way to check the next buses arriving at a particular bus stop.
 This app doesn't provide navigation or route suggestions, it is targeted to users familiar with the
 city who simply need real-time bus arrival information at specific stops.
 
@@ -21,5 +21,5 @@ city who simply need real-time bus arrival information at specific stops.
 ## Data source
 
 This app uses data provided by the Vigo City Council [Open Data Vigo](https://datos.vigo.org). This
-application can stop working temporarily or permanently without notice because the data obtained
+application can stop working temporarily or permanently without notice because the data is obtained
 directly at runtime.
