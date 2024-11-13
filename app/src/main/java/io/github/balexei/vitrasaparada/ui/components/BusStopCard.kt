@@ -20,10 +20,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import io.github.balexei.vitrasaparada.R
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
 import io.github.balexei.vitrasaparada.ui.util.BusStopPreviewParameterProvider
@@ -49,7 +51,7 @@ fun BusAllStopCard(
                 IconButton(onClick = { setFavourite(stop.id, !stop.isFavourite) }) {
                     Icon(
                         imageVector = if (stop.isFavourite) Icons.Filled.Star else Icons.Filled.Add,
-                        contentDescription = ""
+                        contentDescription = null
                     )
                 }
             }
@@ -59,7 +61,7 @@ fun BusAllStopCard(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 item {
-                    Text(text = "Routes")
+                    Text(text = stringResource(R.string.routes))
                 }
                 items(stop.routes) {
                     SuggestionChip(label = { Text(it) }, onClick = {})
@@ -90,7 +92,7 @@ fun BusFavouriteStopCard(
                 IconButton(onClick = { setFavourite(stop.id, !stop.isFavourite) }) {
                     Icon(
                         imageVector = if (stop.isFavourite) Icons.Filled.Star else Icons.Filled.Add,
-                        contentDescription = ""
+                        contentDescription = null
                     )
                 }
             }

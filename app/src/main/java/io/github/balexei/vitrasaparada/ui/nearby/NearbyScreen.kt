@@ -12,10 +12,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import io.github.balexei.vitrasaparada.R
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.data.Position
 import io.github.balexei.vitrasaparada.ui.components.BusFavouriteStopCard
@@ -44,12 +46,12 @@ fun NearbyScreen(
                 ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "LAT: ${currentLocation.latitude} LON: ${currentLocation.longitude}",
+                        text = stringResource(R.string.lat_lon, currentLocation.latitude, currentLocation.longitude),
                         textAlign = TextAlign.Center,
                     )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "Showing stops in a 200m radius",
+                        text = stringResource(R.string.showing_stops_within_radius, 200),
                         textAlign = TextAlign.Center
                     )
                 }

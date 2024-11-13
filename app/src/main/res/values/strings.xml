@@ -1,3 +1,14 @@
 <resources>
-    <string name="app_name">VitrasaParada</string>
+    <string name="app_name">Buses Vigo</string>
+    <string name="favourites">Favourites</string>
+    <string name="nearby">Nearby</string>
+    <string name="all">All</string>
+    <string name="about">About</string>
+    <string name="routes">Routes</string>
+    <string name="description_bus_stop_info">Bus stop information</string>
+    <string name="no_favourites_hint">The stops marked as Favourite will appear here.</string>
+    <string name="showing_stops_within_radius">Showing stops in a %dm radius</string>
+    <string name="lat_lon">LAT: %2$.5f LON: %2$.5f</string>
+    <string name="data_source_city_council">Information source: Vigo City Council</string>
+    <string name="data_source_link" translatable="false">https://datos.vigo.org</string>
 </resources>

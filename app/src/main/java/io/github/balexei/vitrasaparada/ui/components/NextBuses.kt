@@ -9,10 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import coil3.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlin.random.Random
+import io.github.balexei.vitrasaparada.R
 
 @Composable
 fun NextBuses(
@@ -44,7 +46,7 @@ fun NextBuses(
                 painter = painter,
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier.fillMaxWidth(),
-                contentDescription = "Bus stop live info"
+                contentDescription = stringResource(R.string.description_bus_stop_info)
             )
         }
     }

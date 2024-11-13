@@ -13,10 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import io.github.balexei.vitrasaparada.R
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.ui.components.BusFavouriteStopCard
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
@@ -32,7 +34,7 @@ fun FavouritesScreen(
 ) {
     if (stops.isEmpty()) {
         Box(modifier = modifier, contentAlignment = Alignment.Center) {
-            Text("The stops marked as Favourite will appear here.")
+            Text(text = stringResource(R.string.no_favourites_hint))
         }
         return
     }

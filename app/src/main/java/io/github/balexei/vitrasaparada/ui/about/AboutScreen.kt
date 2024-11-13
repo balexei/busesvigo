@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import io.github.balexei.vitrasaparada.R
@@ -25,12 +26,12 @@ fun AboutScreen() {
     ) {
         Image(
             painter = painterResource(R.mipmap.ic_launcher_foreground),
-            contentDescription = "App icon"
+            contentDescription = null
         )
-        Text("Vitrasa Parada")
+        Text(stringResource(R.string.app_name))
         Spacer(modifier = Modifier.height(32.dp))
-        Text("Fuente de los datos: Ayuntamiento de Vigo")
-        Text("https://datos.vigo.org")
+        Text(stringResource(R.string.data_source_city_council))
+        Text(stringResource(R.string.data_source_link))
     }
 }
 

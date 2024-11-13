@@ -11,7 +11,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import io.github.balexei.vitrasaparada.R
 import io.github.balexei.vitrasaparada.ui.Destinations
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
 
@@ -27,29 +29,29 @@ fun BottomNavigationBar(
 
     NavigationBarItem(
         selected = currentRoute == Destinations.FAVOURITES,
-        label = { Text(text = "Favourites") },
-        icon = { Icon(Icons.Filled.Star, "") },
+        label = { Text(text = stringResource(R.string.favourites)) },
+        icon = { Icon(Icons.Filled.Star, null) },
         onClick = navigateToFavourites
     )
 
     NavigationBarItem(
         selected = currentRoute == Destinations.NEARBY,
-        label = { Text(text = "Nearby") },
-        icon = { Icon(Icons.Filled.LocationOn, "") },
+        label = { Text(text = stringResource(R.string.nearby)) },
+        icon = { Icon(Icons.Filled.LocationOn, null) },
         onClick = navigateToNearby
     )
 
     NavigationBarItem(
         selected = currentRoute == Destinations.ALL,
-        label = { Text(text = "All") },
-        icon = { Icon(Icons.Filled.AddCircle, "") },
+        label = { Text(text = stringResource(R.string.all)) },
+        icon = { Icon(Icons.Filled.AddCircle, null) },
         onClick = navigateToAll
     )
 
     NavigationBarItem(
         selected = currentRoute == Destinations.ABOUT,
-        label = { Text(text = "About") },
-        icon = { Icon(Icons.Filled.Info, "") },
+        label = { Text(text = stringResource(R.string.about)) },
+        icon = { Icon(Icons.Filled.Info, null) },
         onClick = navigateToAbout
     )
 }
