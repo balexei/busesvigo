@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Buses Vigo</string>
+    <string name="app_name" translatable="false">Buses Vigo</string>
     <string name="favourites">Favourites</string>
     <string name="nearby">Nearby</string>
     <string name="all">All</string>
