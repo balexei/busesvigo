@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.room.Room
 import io.github.balexei.vitrasaparada.data.BusStopRepository
 import io.github.balexei.vitrasaparada.data.DefaultBusStopRepository
+import io.github.balexei.vitrasaparada.data.location.GmsLocationRepository
+import io.github.balexei.vitrasaparada.data.location.LocationRepository
 import io.github.balexei.vitrasaparada.data.source.local.BusStopDatabase
 import io.github.balexei.vitrasaparada.data.source.network.BusStopNetworkDataSource
 import timber.log.Timber
@@ -26,4 +28,6 @@ class VitrasaParada : Application() {
             networkDataSource = BusStopNetworkDataSource(),
             localDataSource = localDb.busStopDao()
         )
+
+    val locationRepository: LocationRepository get() = GmsLocationRepository(this)
 }

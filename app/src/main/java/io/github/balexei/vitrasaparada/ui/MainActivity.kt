@@ -71,10 +71,9 @@ class MainActivity : ComponentActivity() {
     ) { isGranted ->
         if (isGranted) {
             Timber.d("Location permission granted")
-            viewModel.startLocationUpdates()
+            viewModel.onLocationPermissionGranted()
         } else {
             Timber.d("Location permission denied")
-            viewModel.stopLocationUpdates()
         }
     }
 }

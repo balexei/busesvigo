@@ -1,11 +1,6 @@
 package io.github.balexei.vitrasaparada.ui
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Application
-import android.content.pm.PackageManager
 import android.location.Location
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,19 +9,13 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.Priority
 import io.github.balexei.vitrasaparada.VitrasaParada
 import io.github.balexei.vitrasaparada.data.BusStop
 import io.github.balexei.vitrasaparada.data.BusStopRepository
 import io.github.balexei.vitrasaparada.data.Position
+import io.github.balexei.vitrasaparada.data.location.LocationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -44,17 +33,14 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MainViewModel(
-    private val application: Application,
     private val busStopRepository: BusStopRepository,
+    private val locationRepository: LocationRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     init {
         checkPopulateFreshInstall()
         attachLocationListeners()
     }
-
-    private val fusedLocationClient: FusedLocationProviderClient =
-        LocationServices.getFusedLocationProviderClient(application)
 
     private val _searchQuery = MutableStateFlow("")
 
@@ -142,65 +128,25 @@ class MainViewModel(
 
     private fun attachLocationListeners() {
         viewModelScope.launch {
-            delay(1L) // FIXME ñapa
+            locationRepository.getLocationFlow()
+                .map { it?.let { Position(it.latitude, it.longitude) } }
+                .collect { _currentLocation.value = it }
+        }
+        viewModelScope.launch {
             _currentLocation.subscriptionCount
                 .map { count -> count > 0 }
                 .distinctUntilChanged()
                 .onEach { isActive ->
-                    if (isActive) checkPermissionAndStartLocationUpdates() else stopLocationUpdates()
+                    if (isActive) locationRepository.startLocationUpdates() else locationRepository.stopLocationUpdates()
                 }.launchIn(viewModelScope)
         }
     }
 
-    private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(location: LocationResult) {
-            location.lastLocation?.let {
-                Timber.d("New location $it")
-                _currentLocation.value = Position(latitude = it.latitude, longitude = it.longitude)
-            }
-        }
-    }
-
-    private var isTrackingLocation = false
     private val _requestLocationPermissionEvent = MutableSharedFlow<Unit>()
     val requestLocationPermissionEvent = _requestLocationPermissionEvent.asSharedFlow()
 
-    suspend fun checkPermissionAndStartLocationUpdates() {
-        Timber.d("Checking permission")
-        if (ActivityCompat.checkSelfPermission(
-                application.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                application.applicationContext,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            Timber.d("Emit ask for permission")
-            _requestLocationPermissionEvent.emit(Unit)
-        } else {
-            startLocationUpdates()
-        }
-
-    }
-
-    @SuppressLint("MissingPermission")
-    fun startLocationUpdates() {
-        if (!isTrackingLocation) {
-            isTrackingLocation = true
-            Timber.d("Start location updates")
-            val locationRequest =
-                LocationRequest.Builder(0L).setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
-                    .setIntervalMillis(10000L).build()
-            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null)
-        }
-    }
-
-    fun stopLocationUpdates() {
-        Timber.d("Stop location updates")
-        if (isTrackingLocation) {
-            isTrackingLocation = false
-            fusedLocationClient.removeLocationUpdates(locationCallback)
-        }
+    fun onLocationPermissionGranted() {
+        locationRepository.startLocationUpdates()
     }
 
     companion object {
@@ -208,10 +154,9 @@ class MainViewModel(
             initializer {
                 val savedStateHandle = createSavedStateHandle()
                 val application = this[APPLICATION_KEY] as VitrasaParada
-                val busStopRepository = application.busStopRepository
                 MainViewModel(
-                    application = application,
-                    busStopRepository = busStopRepository,
+                    busStopRepository = application.busStopRepository,
+                    locationRepository = application.locationRepository,
                     savedStateHandle = savedStateHandle
                 )
             }
