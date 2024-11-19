@@ -8,7 +8,7 @@
     <string name="description_bus_stop_info">Bus stop information</string>
     <string name="no_favourites_hint">The stops marked as Favourite will appear here.</string>
     <string name="showing_stops_within_radius">Showing stops in a %dm radius</string>
-    <string name="lat_lon">LAT: %2$.5f LON: %2$.5f</string>
+    <string name="lat_lon">LAT: %1$.5f LON: %2$.5f</string>
     <string name="data_source_city_council">Information source: Vigo City Council</string>
     <string name="data_source_link" translatable="false">https://datos.vigo.org</string>
 </resources>

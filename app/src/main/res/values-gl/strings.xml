@@ -8,6 +8,6 @@
     <string name="description_bus_stop_info">Información acerca da parada</string>
     <string name="no_favourites_hint">As paradas marcadas como favoritas aparecerán aquí.</string>
     <string name="showing_stops_within_radius">Mostrando paradas nun radio de %dm</string>
-    <string name="lat_lon">LAT: %2$.5f LON: %2$.5f</string>
+    <string name="lat_lon">LAT: %1$.5f LON: %2$.5f</string>
     <string name="data_source_city_council">Fonte de información: Concello de Vigo</string>
 </resources>
