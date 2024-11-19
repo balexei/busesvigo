@@ -11,6 +11,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import io.github.balexei.vitrasaparada.data.model.Position
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,10 +20,10 @@ import timber.log.Timber
 class GmsLocationRepository(private val application: Application) : LocationRepository {
     private val fusedLocationClient: FusedLocationProviderClient =
         LocationServices.getFusedLocationProviderClient(application)
-    private val currentLocation = MutableStateFlow<Location?>(null)
+    private val currentLocation = MutableStateFlow<Position?>(null)
     private var isTrackingLocation = false
 
-    override fun getLocationFlow(): StateFlow<Location?> = currentLocation.asStateFlow()
+    override fun getLocationFlow(): StateFlow<Position?> = currentLocation.asStateFlow()
 
     @SuppressLint("MissingPermission")
     override fun startLocationUpdates(): LocationStatus {
@@ -55,7 +56,7 @@ class GmsLocationRepository(private val application: Application) : LocationRepo
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(location: LocationResult) {
             location.lastLocation?.let {
-                currentLocation.value = Location(latitude = it.latitude, longitude = it.longitude)
+                currentLocation.value = Position(latitude = it.latitude, longitude = it.longitude)
             }
         }
     }

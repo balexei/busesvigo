@@ -2,12 +2,12 @@ package io.github.balexei.vitrasaparada
 
 import android.app.Application
 import androidx.room.Room
-import io.github.balexei.vitrasaparada.data.BusStopRepository
-import io.github.balexei.vitrasaparada.data.DefaultBusStopRepository
+import io.github.balexei.vitrasaparada.data.busstop.BusStopRepository
+import io.github.balexei.vitrasaparada.data.busstop.DefaultBusStopRepository
+import io.github.balexei.vitrasaparada.data.busstop.source.local.BusStopDatabase
+import io.github.balexei.vitrasaparada.data.busstop.source.network.BusStopNetworkDataSource
 import io.github.balexei.vitrasaparada.data.location.GmsLocationRepository
 import io.github.balexei.vitrasaparada.data.location.LocationRepository
-import io.github.balexei.vitrasaparada.data.source.local.BusStopDatabase
-import io.github.balexei.vitrasaparada.data.source.network.BusStopNetworkDataSource
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 

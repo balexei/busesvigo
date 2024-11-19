@@ -1,4 +1,4 @@
-package io.github.balexei.vitrasaparada.data.source.network
+package io.github.balexei.vitrasaparada.data.busstop.source.network
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

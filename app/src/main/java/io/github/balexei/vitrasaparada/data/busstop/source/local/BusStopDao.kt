@@ -1,4 +1,4 @@
-package io.github.balexei.vitrasaparada.data.source.local
+package io.github.balexei.vitrasaparada.data.busstop.source.local
 
 import androidx.room.Dao
 import androidx.room.Query

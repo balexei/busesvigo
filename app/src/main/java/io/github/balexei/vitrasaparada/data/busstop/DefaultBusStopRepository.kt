@@ -1,8 +1,11 @@
-package io.github.balexei.vitrasaparada.data
+package io.github.balexei.vitrasaparada.data.busstop
 
-import io.github.balexei.vitrasaparada.data.source.local.BusStopDao
-import io.github.balexei.vitrasaparada.data.source.local.LocalBusStop
-import io.github.balexei.vitrasaparada.data.source.network.NetworkDataSource
+import io.github.balexei.vitrasaparada.data.model.BusStop
+import io.github.balexei.vitrasaparada.data.model.toLocal
+import io.github.balexei.vitrasaparada.data.busstop.source.local.BusStopDao
+import io.github.balexei.vitrasaparada.data.busstop.source.local.LocalBusStop
+import io.github.balexei.vitrasaparada.data.busstop.source.network.NetworkDataSource
+import io.github.balexei.vitrasaparada.data.model.toExternal
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import timber.log.Timber
@@ -12,7 +15,7 @@ class DefaultBusStopRepository(
     private val localDataSource: BusStopDao,
 ) : BusStopRepository {
     override fun getBusStopsStream(): Flow<List<BusStop>> {
-        return localDataSource.observeAll().map(List<LocalBusStop>::toExternal)
+        return localDataSource.observeAll().map { it.toExternal() }
     }
 
     override suspend fun getBusStops(forceUpdate: Boolean): List<BusStop> {

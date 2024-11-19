@@ -1,5 +1,6 @@
-package io.github.balexei.vitrasaparada.data
+package io.github.balexei.vitrasaparada.data.busstop
 
+import io.github.balexei.vitrasaparada.data.model.BusStop
 import kotlinx.coroutines.flow.Flow
 
 interface BusStopRepository {

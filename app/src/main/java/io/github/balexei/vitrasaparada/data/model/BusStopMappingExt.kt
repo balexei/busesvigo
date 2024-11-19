@@ -1,7 +1,7 @@
-package io.github.balexei.vitrasaparada.data
+package io.github.balexei.vitrasaparada.data.model
 
-import io.github.balexei.vitrasaparada.data.source.local.LocalBusStop
-import io.github.balexei.vitrasaparada.data.source.network.NetworkBusStop
+import io.github.balexei.vitrasaparada.data.busstop.source.local.LocalBusStop
+import io.github.balexei.vitrasaparada.data.busstop.source.network.NetworkBusStop
 
 fun LocalBusStop.toExternal() = BusStop(
     id = id,

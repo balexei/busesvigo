@@ -18,8 +18,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import io.github.balexei.vitrasaparada.R
-import io.github.balexei.vitrasaparada.data.BusStop
-import io.github.balexei.vitrasaparada.data.Position
+import io.github.balexei.vitrasaparada.data.model.BusStop
+import io.github.balexei.vitrasaparada.data.model.Position
 import io.github.balexei.vitrasaparada.ui.components.BusFavouriteStopCard
 import io.github.balexei.vitrasaparada.ui.theme.VitrasaParadaTheme
 import io.github.balexei.vitrasaparada.ui.util.BusStopListPreviewParameterProvider

@@ -1,8 +1,8 @@
 package io.github.balexei.vitrasaparada.ui.util
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import io.github.balexei.vitrasaparada.data.BusStop
-import io.github.balexei.vitrasaparada.data.Position
+import io.github.balexei.vitrasaparada.data.model.BusStop
+import io.github.balexei.vitrasaparada.data.model.Position
 
 class BusStopListPreviewParameterProvider : PreviewParameterProvider<List<BusStop>> {
     override val values = sequenceOf(emptyList(), shortList)

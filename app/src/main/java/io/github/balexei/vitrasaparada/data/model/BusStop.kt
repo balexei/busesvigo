@@ -1,4 +1,4 @@
-package io.github.balexei.vitrasaparada.data
+package io.github.balexei.vitrasaparada.data.model
 
 data class BusStop(
     val id: Int,
@@ -8,5 +8,3 @@ data class BusStop(
     val isFavourite: Boolean,
     val alias: String?
 )
-
-data class Position(val latitude: Double, val longitude: Double)

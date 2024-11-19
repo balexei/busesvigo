@@ -10,9 +10,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import io.github.balexei.vitrasaparada.VitrasaParada
-import io.github.balexei.vitrasaparada.data.BusStop
-import io.github.balexei.vitrasaparada.data.BusStopRepository
-import io.github.balexei.vitrasaparada.data.Position
+import io.github.balexei.vitrasaparada.data.busstop.BusStopRepository
+import io.github.balexei.vitrasaparada.data.model.BusStop
+import io.github.balexei.vitrasaparada.data.model.Position
 import io.github.balexei.vitrasaparada.data.location.LocationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
