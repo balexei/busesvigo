@@ -2,12 +2,14 @@ package io.github.balexei.vitrasaparada.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.balexei.vitrasaparada.ui.about.AboutRoute
 import io.github.balexei.vitrasaparada.ui.all.AllRoute
+import io.github.balexei.vitrasaparada.ui.all.AllViewModel
 import io.github.balexei.vitrasaparada.ui.favourites.FavouritesRoute
 import io.github.balexei.vitrasaparada.ui.nearby.NearbyRoute
 
@@ -36,7 +38,7 @@ fun NavGraph(
         composable(
             route = Destinations.ALL
         ) { navBackStackEntry ->
-            AllRoute(viewModel)
+            AllRoute(viewModel(factory = AllViewModel.Factory))
         }
         composable(
             route = Destinations.ABOUT

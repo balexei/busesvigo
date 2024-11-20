@@ -4,10 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import io.github.balexei.vitrasaparada.ui.MainViewModel
 
 @Composable
-fun AllRoute(viewModel: MainViewModel) {
+fun AllRoute(viewModel: AllViewModel) {
     val busStops by viewModel.filteredStops.collectAsState()
     val query by viewModel.searchQuery.collectAsState()
     AllScreen(
