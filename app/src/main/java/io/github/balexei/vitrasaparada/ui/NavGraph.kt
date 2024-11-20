@@ -11,6 +11,7 @@ import io.github.balexei.vitrasaparada.ui.about.AboutRoute
 import io.github.balexei.vitrasaparada.ui.all.AllRoute
 import io.github.balexei.vitrasaparada.ui.all.AllViewModel
 import io.github.balexei.vitrasaparada.ui.favourites.FavouritesRoute
+import io.github.balexei.vitrasaparada.ui.favourites.FavouritesViewModel
 import io.github.balexei.vitrasaparada.ui.nearby.NearbyRoute
 
 @Composable
@@ -28,7 +29,7 @@ fun NavGraph(
         composable(
             route = Destinations.FAVOURITES
         ) { navBackStackEntry ->
-            FavouritesRoute(viewModel)
+            FavouritesRoute(viewModel(factory = FavouritesViewModel.Factory))
         }
         composable(
             route = Destinations.NEARBY

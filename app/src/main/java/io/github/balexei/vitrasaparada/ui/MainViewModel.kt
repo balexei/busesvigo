@@ -36,31 +36,13 @@ class MainViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
     init {
-        checkPopulateFreshInstall()
         attachLocationListeners()
     }
-
-    val favouriteStops: StateFlow<List<BusStop>> = busStopRepository.getFavoritesStream()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = emptyList()
-        )
-
 
     fun setFavourite(id: Int, value: Boolean) {
         viewModelScope.launch {
             Timber.d("Setting stop id $id favourite to $value")
             busStopRepository.setFavorite(id, value)
-        }
-    }
-
-    private fun checkPopulateFreshInstall() {
-        viewModelScope.launch {
-            if (busStopRepository.getBusStops().isEmpty()) {
-                Timber.d("No bus stops saved, initializing list of bus stops")
-                busStopRepository.initFromNetwork()
-            }
         }
     }
 
@@ -72,9 +54,7 @@ class MainViewModel(
             location?.let {
                 filterNearbyStops(stops, it)
             } ?: emptyList()
-        }
-            .flowOn(Dispatchers.Default)
-            .stateIn(
+        }.flowOn(Dispatchers.Default).stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5000),
                 initialValue = emptyList()
@@ -104,9 +84,7 @@ class MainViewModel(
                 .collect { _currentLocation.value = it }
         }
         viewModelScope.launch {
-            _currentLocation.subscriptionCount
-                .map { count -> count > 0 }
-                .distinctUntilChanged()
+            _currentLocation.subscriptionCount.map { count -> count > 0 }.distinctUntilChanged()
                 .onEach { isActive ->
                     if (isActive) locationRepository.startLocationUpdates() else locationRepository.stopLocationUpdates()
                 }.launchIn(viewModelScope)

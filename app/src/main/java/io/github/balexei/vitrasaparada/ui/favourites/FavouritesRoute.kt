@@ -9,14 +9,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import io.github.balexei.vitrasaparada.ui.MainViewModel
 import kotlinx.coroutines.delay
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun FavouritesRoute(viewModel: MainViewModel) {
+fun FavouritesRoute(viewModel: FavouritesViewModel) {
     val favouriteStops by viewModel.favouriteStops.collectAsState()
     var currentTime by remember { mutableStateOf(getCurrentUtcTime()) }
     LaunchedEffect(Unit) {
