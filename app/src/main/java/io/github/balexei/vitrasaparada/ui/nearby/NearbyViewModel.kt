@@ -1,4 +1,4 @@
-package io.github.balexei.vitrasaparada.ui
+package io.github.balexei.vitrasaparada.ui.nearby
 
 import android.location.Location
 import androidx.lifecycle.SavedStateHandle
@@ -15,22 +15,18 @@ import io.github.balexei.vitrasaparada.data.location.LocationRepository
 import io.github.balexei.vitrasaparada.data.model.BusStop
 import io.github.balexei.vitrasaparada.data.model.Position
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class MainViewModel(
+class NearbyViewModel(
     private val busStopRepository: BusStopRepository,
     private val locationRepository: LocationRepository,
     private val savedStateHandle: SavedStateHandle
@@ -39,15 +35,8 @@ class MainViewModel(
         attachLocationListeners()
     }
 
-    fun setFavourite(id: Int, value: Boolean) {
-        viewModelScope.launch {
-            Timber.d("Setting stop id $id favourite to $value")
-            busStopRepository.setFavorite(id, value)
-        }
-    }
-
     private val _currentLocation = MutableStateFlow<Position?>(null)
-    val currentLocation: StateFlow<Position?> = _currentLocation
+    val currentLocation: StateFlow<Position?> = _currentLocation.asStateFlow()
 
     val nearbyStops: StateFlow<List<BusStop>> =
         currentLocation.combine(busStopRepository.getBusStopsStream()) { location, stops ->
@@ -55,10 +44,25 @@ class MainViewModel(
                 filterNearbyStops(stops, it)
             } ?: emptyList()
         }.flowOn(Dispatchers.Default).stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5000),
-                initialValue = emptyList()
-            )
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    fun setFavourite(id: Int, value: Boolean) {
+        viewModelScope.launch {
+            Timber.d("Setting stop id $id favourite to $value")
+            busStopRepository.setFavorite(id, value)
+        }
+    }
+
+    fun startLocationUpdates() {
+        locationRepository.startLocationUpdates()
+    }
+
+    fun stopLocationUpdates() {
+        locationRepository.stopLocationUpdates()
+    }
 
     private fun filterNearbyStops(
         stops: List<BusStop>,
@@ -81,21 +85,12 @@ class MainViewModel(
         viewModelScope.launch {
             locationRepository.getLocationFlow()
                 .map { it?.let { Position(it.latitude, it.longitude) } }
-                .collect { _currentLocation.value = it }
+                .collect { position ->
+                    if (position != null) {
+                        _currentLocation.value = position
+                    }
+                }
         }
-        viewModelScope.launch {
-            _currentLocation.subscriptionCount.map { count -> count > 0 }.distinctUntilChanged()
-                .onEach { isActive ->
-                    if (isActive) locationRepository.startLocationUpdates() else locationRepository.stopLocationUpdates()
-                }.launchIn(viewModelScope)
-        }
-    }
-
-    private val _requestLocationPermissionEvent = MutableSharedFlow<Unit>()
-    val requestLocationPermissionEvent = _requestLocationPermissionEvent.asSharedFlow()
-
-    fun onLocationPermissionGranted() {
-        locationRepository.startLocationUpdates()
     }
 
     companion object {
@@ -103,7 +98,7 @@ class MainViewModel(
             initializer {
                 val savedStateHandle = createSavedStateHandle()
                 val application = this[APPLICATION_KEY] as VitrasaParada
-                MainViewModel(
+                NearbyViewModel(
                     busStopRepository = application.busStopRepository,
                     locationRepository = application.locationRepository,
                     savedStateHandle = savedStateHandle

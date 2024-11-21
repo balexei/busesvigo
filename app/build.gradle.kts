@@ -98,6 +98,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.material.icons.core)
+    implementation(libs.accompanist.permissions)
     implementation(libs.timber)
     implementation(libs.play.services.location)
     annotationProcessor(libs.androidx.room.compiler)

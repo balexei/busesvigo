@@ -9,6 +9,10 @@
     <string name="no_favourites_hint">The stops marked as Favourite will appear here.</string>
     <string name="showing_stops_within_radius">Showing stops in a %dm radius</string>
     <string name="lat_lon">LAT: %1$.5f LON: %2$.5f</string>
+    <string name="location_required_message">Location permission is required to show nearby bus stops.</string>
+    <string name="grant_permission">Grant Permission</string>
+    <string name="location_rationale_message">The application needs to access your location to show nearby bus stops. Please allow this permission.</string>
+    <string name="open_settings">Open Settings</string>
     <string name="data_source_city_council">Information source: Vigo City Council</string>
     <string name="data_source_link" translatable="false">https://datos.vigo.org</string>
 </resources>

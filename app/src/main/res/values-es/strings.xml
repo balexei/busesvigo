@@ -9,5 +9,9 @@
     <string name="no_favourites_hint">Las paradas marcadas como favoritas aparecerán aquí.</string>
     <string name="showing_stops_within_radius">Mostrando paradas en un radio de %dm</string>
     <string name="lat_lon">LAT: %1$.5f LON: %2$.5f</string>
+    <string name="location_required_message">Se requiere permiso de ubicación para mostrar las paradas de autobús cercanas.</string>
+    <string name="grant_permission">Conceder permiso</string>
+    <string name="location_rationale_message">La aplicación necesita acceder a la ubicación para mostrar paradas de autobús cercanas. Por favor, concede este permiso.</string>
+    <string name="open_settings">Abrir configuración</string>
     <string name="data_source_city_council">Fuente de los datos: Ayuntamiento de Vigo</string>
 </resources>
